@@ -6,11 +6,13 @@
 <table>
     <thead>
         <th>Name</th>
+        <th>Image</th>
     </thead>
     <tbody>
         @foreach ($pictures as $picture)
             <tr>
                 <td>{{ $picture->title }} </td>
+                <td><img src="{{ Storage::url($picture->path) }}"width="50" height="60"></td>
             </tr>
         @endforeach
     </tbody>

@@ -39,7 +39,11 @@ class PictureController extends Controller
     {
         $picture = new Picture($request->all());
         $picture->gallery()->associate($gallery);
-        $picture->path = "";
+
+        $picture->path = $request->file('picture_file')->store(
+            'galleries/'.$gallery->id, 'public'
+        );
+
         $picture->save();
 
         return redirect()->route('galleries.pictures.index', $gallery);
