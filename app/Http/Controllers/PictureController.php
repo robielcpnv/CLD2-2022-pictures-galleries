@@ -41,7 +41,7 @@ class PictureController extends Controller
         $picture->gallery()->associate($gallery);
 
         $picture->path = $request->file('picture_file')->store(
-            'galleries/'.$gallery->id, 'local'
+            'galleries/'.$gallery->id, 's3'
         );
 
         $picture->save();
