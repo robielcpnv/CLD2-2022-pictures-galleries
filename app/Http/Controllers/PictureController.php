@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Picture;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PictureController extends Controller
 {
@@ -41,8 +42,9 @@ class PictureController extends Controller
         $picture->gallery()->associate($gallery);
 
         $picture->path = $request->file('picture_file')->store(
-            'galleries/'.$gallery->id, 's3'
+            'galleries/'.$gallery->id,  's3'
         );
+
 
         $picture->save();
 
@@ -57,10 +59,12 @@ class PictureController extends Controller
      */
     public function show(Gallery $gallery, Picture $picture, Request $request)
     {
+
         if(\Str::startsWith($request->header('Accept'), 'image/')){
+            #return \Response::make(Storage::disk('s3')->get($picture->path), 200);
             return \Storage::download($picture->path);
         }else{
-            return view();
+            return view('pictures.show',compact('picture', 'gallery'));
         }
     }
 
