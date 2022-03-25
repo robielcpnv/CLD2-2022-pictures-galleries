@@ -1,22 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="{{ route('galleries.pictures.create', $gallery) }}">Add new  picture</a>
+    <a href="{{ route('galleries.pictures.create', $gallery) }}">Add new  picture</a>
 
-<table>
-    <thead>
+    <table>
+        <thead>
         <th>Name</th>
         <th>Image</th>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         @foreach ($pictures as $picture)
+
             <tr>
-                <td>{{ $picture->title }} </td>
-                <td><img src="{{ route('galleries.pictures.show',[$gallery,$picture]) }}" width="50" height="60"></td>
+
+                <td>
+                    <a href="{{ route('galleries.pictures.show',[$gallery,$picture]) }}">
+                        {{ $picture->title }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('galleries.pictures.show',[$gallery,$picture]) }}">
+                        <img src="{{ route('galleries.pictures.show',[$gallery,$picture]) }}" width="50" height="60"></a>
+                </td>
+                </a>
             </tr>
         @endforeach
-    </tbody>
-</table>
+        </tbody>
+    </table>
 @endsection
 
 

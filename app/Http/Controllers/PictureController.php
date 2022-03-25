@@ -63,7 +63,7 @@ class PictureController extends Controller
         if(\Str::startsWith($request->header('Accept'), 'image/')){
             #return \Response::make(Storage::disk('s3')->get($picture->path), 200);
             return \Storage::download($picture->path);
-        }else{
+        }else if(\Str::startsWith($request->header('Accept'), 'text/')){
             return view('pictures.show',compact('picture', 'gallery'));
         }
     }
