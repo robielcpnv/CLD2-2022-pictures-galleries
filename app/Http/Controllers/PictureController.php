@@ -33,7 +33,7 @@ class PictureController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Gallery $gallery, Request $request)
@@ -42,7 +42,7 @@ class PictureController extends Controller
         $picture->gallery()->associate($gallery);
 
         $picture->path = $request->file('picture_file')->store(
-            'galleries/'.$gallery->id,  's3'
+            'galleries/' . $gallery->id, 's3'
         );
 
 
@@ -54,24 +54,25 @@ class PictureController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Picture  $picture
+     * @param \App\Models\Picture $picture
      * @return \Illuminate\Http\Response
      */
     public function show(Gallery $gallery, Picture $picture, Request $request)
     {
 
-        if(\Str::startsWith($request->header('Accept'), 'image/')){
+        if (\Str::startsWith($request->header('Accept'), 'image/')) {
             #return \Response::make(Storage::disk('s3')->get($picture->path), 200);
-            return \Storage::download($picture->path);
-        }else if(\Str::startsWith($request->header('Accept'), 'text/')){
-            return view('pictures.show',compact('picture', 'gallery'));
+            return redirect(Storage::disk('s3')->temporaryUrl(
+                $picture->path, now()->addMinutes(1)));
+        } else if (\Str::startsWith($request->header('Accept'), 'text/')) {
+            return view('pictures.show', compact('picture', 'gallery'));
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Picture  $picture
+     * @param \App\Models\Picture $picture
      * @return \Illuminate\Http\Response
      */
     public function destroy(Picture $picture)
