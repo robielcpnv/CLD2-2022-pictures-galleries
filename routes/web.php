@@ -13,6 +13,8 @@ use App\Http\Controllers\PictureController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::resource('galleries', GalleryController::class)->except(['edit','update','destroy']);
 Route::resource('galleries.pictures', PictureController::class)->except(['edit','update']);
